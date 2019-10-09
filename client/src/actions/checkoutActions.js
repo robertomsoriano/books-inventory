@@ -8,8 +8,8 @@ import { tokenConfig } from "./authActions";
 import { returnErrors
   // ,clearErrors
    } from "./errorActions";
+   import Swal from 'sweetalert2'
 export const postTransaction = (data) => (dispatch, getState) => {
-  console.log('checkout')
   dispatch(setCheckoutLoading());
   axios
     .post("/api/checkout",data, tokenConfig(getState))
@@ -21,8 +21,15 @@ export const postTransaction = (data) => (dispatch, getState) => {
       axios
       .post(`/api/cart/empty`,{action: 'empty cart'}, tokenConfig(getState))
     })
-    .catch(err =>
-      dispatch(returnErrors(err.response.data, err.response.status))
+    .catch(err => {
+      Swal.fire({
+        title: 'Could not complete Transaction',
+        text: err.response.data.msg,
+        type: 'error',
+        confirmButtonColor: '#3085d6',
+        footer: '<a href="/books">Check inventory</a>'
+      })
+    dispatch(returnErrors(err.response.data, err.response.status))}
     );
 };
 export const setInvoice= (trans) => dispatch => {

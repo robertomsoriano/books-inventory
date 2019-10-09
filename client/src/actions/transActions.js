@@ -9,7 +9,6 @@ import { returnErrors
 } from "./errorActions";
 
 export const getTrans = () => (dispatch, getState)=> {
-  console.log('wokrssssss')
   dispatch(setTransLoading());
   axios
     .get("/api/transactions", tokenConfig(getState))

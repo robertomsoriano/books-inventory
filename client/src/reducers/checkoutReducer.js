@@ -13,7 +13,6 @@ SET_INVOICE
   export default function(state = initialState, action) {
     switch (action.type) {
       case POST_TRANSACTION:
-      // emptyCart()
         return {
           ...state,
           invoice: action.payload,

@@ -10,7 +10,7 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total }) => {
   return (
     <>
       {/* <Button onClick={() => PrintPage()} variant="outline-light">Print Invoice</Button> */}
-      <i class="fas fa-print" onClick={() => PrintPage()}></i>
+      <i className="fas fa-print" onClick={() => PrintPage()}></i>
       <Container>
         <div
           id="divToPrint"

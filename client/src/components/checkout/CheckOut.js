@@ -35,7 +35,7 @@ const CheckOut = props => {
     assistant: ""
   });
   const [
-    // transaction, 
+    transaction, 
     setTransaction] = useState(null);
 
   useEffect(() => {
@@ -62,7 +62,6 @@ const CheckOut = props => {
 
   // Log Transaction
   const onSubmit = e => {
-    console.log("submit")
     e.preventDefault();
     // Set Transaction object
     const sendTrans = async () => {

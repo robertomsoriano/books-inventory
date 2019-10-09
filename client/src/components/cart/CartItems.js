@@ -9,6 +9,7 @@ import {
   decreaseQuantity,
   deleteItem
 } from "../../actions/cartActions";
+import {getBooks} from '../../actions/bookActions'
 import Swal from "sweetalert2";
 
 /*
@@ -33,6 +34,7 @@ const CartItems = props => {
     }
   };
   useEffect(() => {
+    props.getBooks()
     // eslint-disable-next-line
   }, []);
 
@@ -140,8 +142,17 @@ const CartItems = props => {
                                 outline
                                 size="sm"
                                 onClick={() => {
-                                  props.increaseQuantity(book);
-                                  // window.location.reload();
+                                  let inQuestion = props.stock.books.filter(item => item._id===book._id)
+                                  if((book.quantity + 1) > inQuestion[0].quantity){
+                                    return Swal.fire({
+                                      title: 'Could not add more books',
+                                      text: "There are not enough books in stock to complete your order",
+                                      type: 'error',
+                                      confirmButtonColor: '#3085d6',
+                                      footer: '<a href="/books">Check inventory</a>'
+                                    })
+                                  }
+                                  else{props.increaseQuantity(book);}
                                 }}
                                 style={{ fontSize: "10px", margin: "4px" }}
                               >
@@ -196,9 +207,10 @@ const CartItems = props => {
 };
 const mapStateToProps = state => ({
   cart: state.cart,
+  stock: state.book,
   isAuthenticated: state.auth.isAuthenticated
 });
 export default connect(
   mapStateToProps,
-  { setCart, increaseQuantity, decreaseQuantity, deleteItem }
+  { setCart, increaseQuantity, decreaseQuantity, deleteItem, getBooks }
 )(CartItems);

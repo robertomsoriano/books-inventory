@@ -23,7 +23,7 @@ router.post("/", auth, (req, res) => {
     user: req.user.id
   });
   try {
-    newTransaction.save().then(trans => res.json(trans));
+    // Check Inventory first
     req.body.transaction.booksToUpdate.map(item => {
       Book.findById(item.id, (err, book) => {
         book.quantity = book.quantity - item.quantity;
@@ -31,11 +31,13 @@ router.post("/", auth, (req, res) => {
         book.save();
       });
     });
+    // If there are enough items in stock process transaction
+    newTransaction.save().then(trans => res.json(trans));
     return;
   } catch (err) {
-    return res
-      .status(401)
-      .json({ msg: "Could not process transaction. Please check parameters." });
+    return res.status(425).json({
+      msg: "Transaction not valid. Are you ordering more books than available?"
+    });
   }
 });
 
