@@ -1,12 +1,13 @@
 import React from "react";
 import { Container } from "reactstrap";
 
-const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total }) => {
+const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_price=null, amount_received=null }) => {
   const PrintPage = () => {
     window.print();
   };
   const invoiceLogo = "https://ibbreformada.org/wp-content/uploads/2019/06/LogoMakr_0R2xJD.png"
 
+  let totalVariable = sale_price? 'Subtotal': 'Grand Total'
   return (
     <>
       {/* <Button onClick={() => PrintPage()} variant="outline-light">Print Invoice</Button> */}
@@ -28,11 +29,11 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total }) => {
 
             <div id="identity">
               <p id="address">
-                Iglesia Bautista Bíblica Inc.
+                Libreria Bíblica Sendas Antiguas
                 <br />
                 290 Water Street, Lawrence MA 01841
                 <br />
-                Phone: (978) 685-7071
+                Phone: (978) 681-7570
               </p>
 
               <div id="logo">
@@ -75,6 +76,12 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total }) => {
                       <div className="due">${total}</div>
                     </td>
                   </tr>
+                  {amount_received && (<tr>
+                    <td className="meta-head">Amount Received</td>
+                    <td>
+                      <div className="due">${amount_received}</div>
+                    </td>
+                  </tr>)}
                 </tbody>
               </table>
             </div>
@@ -116,7 +123,7 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total }) => {
               ))}
 
               <tbody>
-                <tr>
+                {/* <tr>
                   <td colSpan="2" className="blank">
                     {" "}
                   </td>
@@ -126,13 +133,13 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total }) => {
                   <td className="total-value">
                     <div id="subtotal">${subtotal}</div>
                   </td>
-                </tr>
+                </tr> */}
                 <tr>
                   <td colSpan="2" className="blank">
                     {" "}
                   </td>
                   <td colSpan="2" className="total-line">
-                    Taxes
+                    Sales Tax:
                   </td>
                   <td className="total-value">
                     <div id="total">${taxes}</div>
@@ -146,22 +153,52 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total }) => {
                     {" "}
                   </td>
                   <td colSpan="2" className="total-line balance">
-                    Balance Due
+                    {totalVariable}
                   </td>
                   <td className="total-value balance">
                     <div className="due">${total}</div>
                   </td>
                 </tr>
               </tbody>
+              {sale_price && (
+              <>
+              <tbody>
+                <tr>
+                  <td colSpan="2" className="blank">
+                    {" "}
+                  </td>
+                  <td colSpan="2" className="total-line balance">
+                    Discount:
+                  </td>
+                  <td className="total-value balance">
+                    <div className="due">(- ${(total*.10).toFixed(2)})</div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td colSpan="2" className="blank">
+                    {" "}
+                  </td>
+                  <td colSpan="2" className="total-line balance">
+                    Grand Total:
+                  </td>
+                  <td className="total-value balance">
+                    <div className="due">${((total)- (total*.10)).toFixed(2)}</div>
+                  </td>
+                </tr>
+              </tbody>
+              </>
+              )}
             </table>
 
-            <div id="terms">
+            {/* <div id="terms">
               <h5>Terms</h5>
               <p>
                 NET 30 Days. Finance Charge of 1.5% will be made on unpaid
                 balances after 30 days.
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </Container>

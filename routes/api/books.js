@@ -60,6 +60,7 @@ router.post("/", auth, (req, res) => {
     author: req.body.book.author,
     description: req.body.book.description,
     price: req.body.book.price,
+    sale_price: req.body.book.sale_price,
     quantity: req.body.book.quantity,
     pic: req.body.book.pic,
     user: req.body.book.user
@@ -83,6 +84,7 @@ router.put("/:id", auth, (req, res) => {
     author,
     description,
     price,
+    // sale_price,
     quantity,
     pic
   } = req.body.book;
@@ -110,6 +112,7 @@ router.put("/:id", auth, (req, res) => {
       (book.author = req.body.book.author),
       (book.description = req.body.book.description),
       (book.price = req.body.book.price),
+      (book.sale_price = req.body.book.sale_price),
       (book.quantity = req.body.book.quantity),
       (book.pic = req.body.book.pic);
 

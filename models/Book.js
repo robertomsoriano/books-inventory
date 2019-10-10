@@ -17,6 +17,12 @@ const BookSchema = new Schema({
   description: {
     type: String
   },
+  disc_price: {
+    type: Number
+  },
+  sale_price: {
+    type: Number
+  },
   price: {
     type: Number,
     required: true

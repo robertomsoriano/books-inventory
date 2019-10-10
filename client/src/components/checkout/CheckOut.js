@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import useForm from "../../hooks/useForm";
 // import { cartTotal } from "../../actions/cartActions";
 import Invoice from "./Invoice";
@@ -17,6 +17,7 @@ import {
   //   NavLink,
   //   Alert
 } from "reactstrap";
+import { Checkbox, Segment } from 'semantic-ui-react'
 import { setCart } from "../../actions/cartActions";
 import { postTransaction } from "../../actions/checkoutActions"
 import Swal from "sweetalert2";
@@ -26,6 +27,7 @@ const CheckOut = props => {
   const books = useSelector(state => state.cart.cart);
   // const [invoice, setInvoice] = useState(null);
   const invoice = props.invoice?props.invoice.invoice_number: null;
+  const [applySale, setApplySale] = useState(false)
   const [user, handleChange] = useForm({
     name: "",
     email: "",
@@ -34,10 +36,9 @@ const CheckOut = props => {
     message: '',
     assistant: ""
   });
-  const [
-    transaction, 
-    setTransaction] = useState(null);
-
+  // const [
+  //   transaction, 
+  //   setTransaction] = useState(null);
   useEffect(() => {
     props.setCart();
     // eslint-disable-next-line
@@ -47,9 +48,11 @@ const CheckOut = props => {
     if (!books) {
       return 1;
     } else if (books.length > 0) {
-      let quant = books.map(book => book.item_total);
-      quant = quant.reduce((acc, curr) => acc + curr);
-      let result = Math.round(quant * 100) / 100;
+      // let totalVariable = applySale?(book.item_total*.90).toFixed(2) : book.item_total
+      let totalAmount = books.map(book => (applySale&& book.sale_price!== undefined)?book.sale_price: book.item_total);
+      // let totalAmount = books.map(book => book.item_total);
+      totalAmount = totalAmount.reduce((acc, curr) => acc + curr);
+      let result = Math.round(totalAmount * 100) / 100;
       return result;
     } else {
       return 1;
@@ -60,7 +63,7 @@ const CheckOut = props => {
   };
   const seller = "Iglesia Bautista Bíblica Inc.";
 
-  // Log Transaction
+  // Post Transaction
   const onSubmit = e => {
     e.preventDefault();
     // Set Transaction object
@@ -73,15 +76,15 @@ const CheckOut = props => {
         )
         return;
       } else {
-        await setTransaction({
-          seller: seller,
-          assistant: user.assistant,
-          customer: user.name,
-          items: books.map(book => {
-            return `${book.name}(${book.quantity})`;
-          }),
-          total: grandTotal()
-        });
+        // await setTransaction({
+        //   seller: seller,
+        //   assistant: user.assistant,
+        //   customer: user.name,
+        //   items: books.map(book => {
+        //     return `${book.name}(${book.quantity})`;
+        //   }),
+        //   total: grandTotal()
+        // });
         await props.postTransaction({
           transaction: {
             seller: seller,
@@ -95,7 +98,8 @@ const CheckOut = props => {
               name: book.name,
               quantity: book.quantity,
               _id: book._id,
-              price: book.price
+              // price: book.price,
+              price:(applySale&& book.sale_price!== undefined)?book.sale_price: book.price
             })),
             subtotal: total(),
             taxes: (Math.round(total() * 0.0625 * 100) / 100),
@@ -205,6 +209,9 @@ const CheckOut = props => {
                   onChange={handleChange}
                   required
                 />
+                <Segment compact>
+                  <Checkbox toggle checked={applySale} onChange={() =>setApplySale(!applySale)} label='Apply Sale Price'/>
+                 </Segment>
               </section>
               <ListGroupItem>
                 <h4>Order items</h4>
@@ -240,8 +247,8 @@ const CheckOut = props => {
                           </td>
                           <td>{book.name}</td>
                           <td>{book.quantity}</td>
-                          <td>${book.price}</td>
-                          <td>${(book.price * book.quantity).toFixed(2)}</td>
+                          <td>${(applySale&& book.sale_price!== undefined)?book.sale_price: book.price}</td>
+                          <td>${(((applySale&& book.sale_price!== undefined)?book.sale_price: book.price)* book.quantity).toFixed(2)}</td>
                         </tr>
                       </tbody>
                     ))}
@@ -271,18 +278,6 @@ const CheckOut = props => {
           </Form>
         </Col>
       </Container>
-      {invoice && (
-        <div>
-          <Invoice
-            invoiceNumber={invoice}
-            user={user}
-            books={books}
-            subtotal={total()}
-            taxes={Math.round(total() * 0.0625 * 100) / 100}
-            total={grandTotal()}
-          />
-        </div>
-      )}
     </>
   ) : (
     <div>
@@ -293,6 +288,7 @@ const CheckOut = props => {
         subtotal={total()}
         taxes={Math.round(total() * 0.0625 * 100) / 100}
         total={grandTotal()}
+        amount_received={user.received}
       />
     </div>
   );
@@ -306,4 +302,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { setCart, postTransaction }
-)(CheckOut);
+)(withRouter(CheckOut));

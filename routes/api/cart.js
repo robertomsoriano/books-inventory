@@ -35,6 +35,7 @@ router.put("/", auth, async (req, res) => {
         author: req.body.book.author,
         description: req.body.book.description,
         price: req.body.book.price,
+        sale_price: req.body.book.sale_price,
         pic: req.body.book.pic
       },
       {
@@ -67,6 +68,7 @@ router.put("/decrease", auth, async (req, res) => {
         author: req.body.book.author,
         description: req.body.book.description,
         price: req.body.book.price,
+        sale_price: req.body.book.sale_price,
         pic: req.body.book.pic
       },
       {
