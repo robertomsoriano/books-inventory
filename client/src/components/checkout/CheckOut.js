@@ -19,7 +19,7 @@ import {
 } from "reactstrap";
 import { Checkbox, Segment } from 'semantic-ui-react'
 import { setCart } from "../../actions/cartActions";
-import { postTransaction } from "../../actions/checkoutActions"
+import { postTransaction, setInvoice } from "../../actions/checkoutActions"
 import Swal from "sweetalert2";
 
 const CheckOut = props => {
@@ -36,9 +36,6 @@ const CheckOut = props => {
     message: '',
     assistant: ""
   });
-  // const [
-  //   transaction, 
-  //   setTransaction] = useState(null);
   useEffect(() => {
     props.setCart();
     // eslint-disable-next-line
@@ -76,16 +73,10 @@ const CheckOut = props => {
         )
         return;
       } else {
-        // await setTransaction({
-        //   seller: seller,
-        //   assistant: user.assistant,
-        //   customer: user.name,
-        //   items: books.map(book => {
-        //     return `${book.name}(${book.quantity})`;
-        //   }),
-        //   total: grandTotal()
-        // });
-        await props.postTransaction({
+
+        try {
+          
+          await props.postTransaction({
           transaction: {
             seller: seller,
             assistant: user.assistant,
@@ -112,6 +103,12 @@ const CheckOut = props => {
             }))
           }
         })
+        // await props.history.push({
+        //   pathname: '/dashboard'
+        // })
+      }catch(err){
+          console.log(err)
+        }
       }
     };
     sendTrans();
@@ -282,16 +279,16 @@ const CheckOut = props => {
   ) : (
     <div>
       <Invoice
-        invoiceNumber={invoice}
-        user={user}
-        books={books}
-        subtotal={total()}
-        taxes={Math.round(total() * 0.0625 * 100) / 100}
-        total={grandTotal()}
-        amount_received={user.received}
+        invoiceNumber={props.invoice.invoice_number}
+        user={props.invoice.customer}
+        books={props.invoice.items}
+        subtotal={props.invoice.subtotal}
+        taxes={props.invoice.taxes}
+        total={props.invoice.total}
+        amount_received={props.invoice.amount_received}
       />
     </div>
-  );
+  )
 };
 
 const mapStateToProps = state => ({
@@ -301,5 +298,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { setCart, postTransaction }
+  { setCart, postTransaction, setInvoice }
 )(withRouter(CheckOut));

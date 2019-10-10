@@ -17,7 +17,7 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_pric
           id="divToPrint"
           className="mt4"
           style={{
-            backgroundColor: "#f5f5f5",
+            // backgroundColor: "#f5f5f5",
             width: "218mm",
             minHeight: "297mm",
             marginLeft: "auto",
@@ -160,36 +160,6 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_pric
                   </td>
                 </tr>
               </tbody>
-              {sale_price && (
-              <>
-              <tbody>
-                <tr>
-                  <td colSpan="2" className="blank">
-                    {" "}
-                  </td>
-                  <td colSpan="2" className="total-line balance">
-                    Discount:
-                  </td>
-                  <td className="total-value balance">
-                    <div className="due">(- ${(total*.10).toFixed(2)})</div>
-                  </td>
-                </tr>
-              </tbody>
-              <tbody>
-                <tr>
-                  <td colSpan="2" className="blank">
-                    {" "}
-                  </td>
-                  <td colSpan="2" className="total-line balance">
-                    Grand Total:
-                  </td>
-                  <td className="total-value balance">
-                    <div className="due">${((total)- (total*.10)).toFixed(2)}</div>
-                  </td>
-                </tr>
-              </tbody>
-              </>
-              )}
             </table>
 
             {/* <div id="terms">

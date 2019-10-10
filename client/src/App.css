@@ -6,7 +6,7 @@
 html,body{
   max-width: 100%;
   font-size: 16px;
-  background: rgba(211, 211, 211, 0.144);
+  /* background: rgba(211, 211, 211, 0.144); */
 }
 .remove-btn {
   margin-right: 0.5rem;
