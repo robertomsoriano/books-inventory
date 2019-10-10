@@ -25,6 +25,7 @@ const EditBook = props => {
   const [newDescription, setNewDescription] = useState(book.description);
   const [newPrice, setNewPrice] = useState(book.price);
   const [newSalePrice, setNewSalePrice] = useState(book.price);
+  const [newDiscPrice, setNewDiscPrice] = useState(book.price);
   const [newQuantity, setNewQuantity] = useState(book.quantity);
   const [newPic, setNewPic] = useState(book.pic);
   useEffect(() => {
@@ -39,6 +40,7 @@ const EditBook = props => {
         await setNewDescription(book.description);
         await setNewPrice(book.price);
         await setNewSalePrice(book.sale_price);
+        await setNewDiscPrice(book.disc_price);
         await setNewQuantity(book.quantity);
         await setNewPic(book.pic);
       }
@@ -52,6 +54,7 @@ const EditBook = props => {
     book.pic,
     book.price,
     book.sale_price,
+    book.disc_price,
     book.quantity,
     book.subtitle,
     bookId,
@@ -79,6 +82,7 @@ const EditBook = props => {
               description: newDescription,
               price: newPrice,
               sale_price: newSalePrice,
+              disc_price: newDiscPrice,
               quantity: newQuantity,
               pic: newPic
             }
@@ -175,6 +179,14 @@ const EditBook = props => {
               type="text"
               value={`${newSalePrice}`}
               onChange={e => setNewSalePrice(e.target.value)}
+            />
+            <h5>Disc Price</h5>
+            <Input
+              className=" form-control col-xs-2"
+              placeholder="update book Disc price"
+              type="text"
+              value={`${newDiscPrice}`}
+              onChange={e => setNewDiscPrice(e.target.value)}
             />
             <h5>Quantity</h5>
             <button

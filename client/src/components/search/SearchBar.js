@@ -10,6 +10,7 @@ import {
   Table,
 } from "reactstrap";
 import Swal from "sweetalert2";
+import AddBookModal from "../books/AddBookModal";
 const initialState = { isLoading: false, results: [], value: "" };
 
 class SearchBar extends Component {
@@ -65,7 +66,7 @@ class SearchBar extends Component {
             </pre>
           </Segment>
         </Grid.Column> */}
-          {results.length && <Table
+          {results.length && <><Table
                     hover
                     responsive
                     borderless
@@ -143,7 +144,10 @@ class SearchBar extends Component {
                           </tr>
                         </tbody>
                       ))}
-                  </Table>}
+                  </Table>
+                <AddBookModal/>
+                </>
+                }
         {!results.length && <BooksList />}
       </Grid>
     );

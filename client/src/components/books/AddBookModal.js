@@ -30,6 +30,7 @@ const AddBookModal = props => {
   const [newDescription, setNewDescription] = useState("");
   const [newPrice, setNewPrice] = useState("");
   const [newSalePrice, setNewSalePrice] = useState("");
+  const [newDiscPrice, setNewDiscPrice] = useState("");
   const [newQuantity, setNewQuantity] = useState("");
   const [newPic, setNewPic] = useState("");
 
@@ -44,6 +45,7 @@ const AddBookModal = props => {
         description: newDescription,
         price: newPrice,
         sale_price: newSalePrice,
+        disc_price: newDiscPrice,
         quantity: newQuantity,
         pic: newPic,
         user: user._id
@@ -150,6 +152,16 @@ const AddBookModal = props => {
                 value={newSalePrice}
                 placeholder="Add sale price"
                 onChange={e => setNewSalePrice(e.target.value)}
+                required
+              />
+              <Label for="discprice">Disc. Price</Label>
+              <Input
+                type="text"
+                name="discprice"
+                id="discprice"
+                value={newDiscPrice}
+                placeholder="Add Disc price"
+                onChange={e => setNewDiscPrice(e.target.value)}
                 required
               />
               <Label for="quantity">Quantity</Label>
