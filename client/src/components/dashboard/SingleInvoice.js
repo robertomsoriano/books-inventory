@@ -23,6 +23,7 @@ const SingleInvoice = (props) => {
                 subtotal={transac.subtotal}
                 taxes={transac.taxes}
                 total={transac.total}
+                amount_received={transac.amount_received}
             /> 
         </div>
     ): (

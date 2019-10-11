@@ -110,6 +110,7 @@ const trans = useSelector(state =>state.trans)
     subtotal={transac.subtotal}
     taxes={transac.taxes}
     total={transac.total}
+    amount_received={transac.amount_received}
     /> 
   </div>)}  
     </>

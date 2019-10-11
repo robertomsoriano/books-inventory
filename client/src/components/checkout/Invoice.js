@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "reactstrap";
 
 const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_price=null, amount_received=null }) => {
+  console.log(amount_received)
   const PrintPage = () => {
     window.print();
   };
