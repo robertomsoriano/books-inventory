@@ -46,7 +46,7 @@ const CheckOut = props => {
       return 1;
     } else if (books.length > 0) {
       // let totalVariable = applySale?(book.item_total*.90).toFixed(2) : book.item_total
-      let totalAmount = books.map(book => (applySale&& book.sale_price!== undefined)?book.sale_price: book.item_total);
+      let totalAmount = books.map(book => (applySale&& book.sale_price!== undefined)?((book.sale_price*.90).toFixed(2)): book.item_total);
       // let totalAmount = books.map(book => book.item_total);
       totalAmount = totalAmount.reduce((acc, curr) => acc + curr);
       let result = Math.round(totalAmount * 100) / 100;
@@ -90,7 +90,7 @@ const CheckOut = props => {
               quantity: book.quantity,
               _id: book._id,
               // price: book.price,
-              price:(applySale&& book.sale_price!== undefined)?book.sale_price: book.price
+              price:(applySale&& book.sale_price!== undefined)?(book.sale_price*.90).toFixed(2): book.price
             })),
             subtotal: total(),
             taxes: (Math.round(total() * 0.0625 * 100) / 100),
@@ -244,8 +244,8 @@ const CheckOut = props => {
                           </td>
                           <td>{book.name}</td>
                           <td>{book.quantity}</td>
-                          <td>${(applySale&& book.sale_price!== undefined)?book.sale_price: book.price}</td>
-                          <td>${(((applySale&& book.sale_price!== undefined)?book.sale_price: book.price)* book.quantity).toFixed(2)}</td>
+                          <td>${(applySale&& book.sale_price!== undefined)?(book.sale_price*.90).toFixed(2): book.price}</td>
+                          <td>${(((applySale&& book.sale_price!== undefined)?(book.sale_price*.90).toFixed(2): book.price)* book.quantity).toFixed(2)}</td>
                         </tr>
                       </tbody>
                     ))}
