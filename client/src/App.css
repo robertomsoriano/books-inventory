@@ -49,6 +49,7 @@ html,body{
 }
 
 .trans-container{
+  background: rgba(211, 211, 211, 0.144);
   justify-content: center;
   align-content: center;
   align-items: center;

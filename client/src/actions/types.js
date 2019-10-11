@@ -33,6 +33,8 @@ export const POST_TRANSACTION = "POST_TRANSACTION";
 export const SET_CHECKOUT_LOADING = "SET_CHECKOUT_LOADING";
 export const GET_CUSTOMER_DATA = "GET_CUSTOMER_DATA"
 export const SET_INVOICE = "SET_INVOICE";
+export const CLEAR_INVOICE = "CLEAR_INVOICE";
+
 //Transactions
 export const GET_TRANS = "GET_TRANS";
 export const SET_TRANS_LOADING = 'SET_TRANS_LOADING'

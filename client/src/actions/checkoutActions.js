@@ -2,7 +2,8 @@ import axios from "axios";
 import {
   POST_TRANSACTION,
   SET_CHECKOUT_LOADING,
-  SET_INVOICE
+  SET_INVOICE,
+  CLEAR_INVOICE
 } from "../actions/types";
 import { tokenConfig } from "./authActions";
 import { returnErrors
@@ -37,6 +38,12 @@ export const setInvoice= (trans) => dispatch => {
   return dispatch({
     type: SET_INVOICE,
     payload: trans
+  });
+}
+export const clearInvoice= () => dispatch => {
+  dispatch(setCheckoutLoading());
+  return dispatch({
+    type: CLEAR_INVOICE
   });
 }
 

@@ -33,7 +33,7 @@ const trans = useSelector(state =>state.trans)
       <Container className='trans-container'>
       <Row>
         {trans.trans.map((trans, idx) => (
-          <TransModal title={moment(trans.sale_date).format("LLL") + " " +trans.customer.name} header={moment(trans.sale_date).format("LLL")} key={idx}>
+          <TransModal title={moment(trans.sale_date).format("LLL")} customer={trans.customer.name} header={moment(trans.sale_date).format("LLL")} key={idx}>
           <Col sm key={idx}>
           <Card key={trans.invoice_number} className='trans-card' style={cardStyle}>
           <ListGroup>

@@ -1,7 +1,8 @@
 import {
 SET_CHECKOUT_LOADING,
 POST_TRANSACTION, 
-SET_INVOICE
+SET_INVOICE,
+CLEAR_INVOICE
   } from "../actions/types";
 // import { emptyCart } from "../actions/cartActions";
   // import Swal from 'sweetalert2'
@@ -27,6 +28,12 @@ SET_INVOICE
         return {
           ...state, 
           invoice: action.payload,
+          loading: false
+        }
+        case CLEAR_INVOICE:
+        return {
+          ...state, 
+          invoice: null,
           loading: false
         }
       default:

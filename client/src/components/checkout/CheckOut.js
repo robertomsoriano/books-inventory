@@ -19,7 +19,7 @@ import {
 } from "reactstrap";
 import { Checkbox, Segment } from 'semantic-ui-react'
 import { setCart } from "../../actions/cartActions";
-import { postTransaction, setInvoice } from "../../actions/checkoutActions"
+import { postTransaction, setInvoice, clearInvoice } from "../../actions/checkoutActions"
 import Swal from "sweetalert2";
 
 const CheckOut = props => {
@@ -37,6 +37,7 @@ const CheckOut = props => {
     assistant: ""
   });
   useEffect(() => {
+    props.clearInvoice();
     props.setCart();
     // eslint-disable-next-line
   }, []);
@@ -278,6 +279,7 @@ const CheckOut = props => {
     </>
   ) : (
     <div>
+      {props.history.push('/invoice')}
       <Invoice
         invoiceNumber={props.invoice.invoice_number}
         user={props.invoice.customer}
@@ -298,5 +300,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  { setCart, postTransaction, setInvoice }
+  { setCart, postTransaction, setInvoice, clearInvoice }
 )(withRouter(CheckOut));

@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { withRouter} from "react-router-dom";
-import {  Icon,  Menu, Segment, Sidebar, Button, Divider } from 'semantic-ui-react'
+import {  Icon,  Menu, Segment, Sidebar, Button, Divider, Header } from 'semantic-ui-react'
 
 const SidebarMenu = (props) => {
   const [visible, setVisible] = useState(false)
@@ -58,6 +58,8 @@ const SidebarMenu = (props) => {
         <Segment basic>
         <Button onClick={()=> setVisible(!visible)}>Menu</Button>
         <Divider/>
+        <Header><Icon name='book'/>Dashboard</Header>
+        
           {props.children}
           
         </Segment>
