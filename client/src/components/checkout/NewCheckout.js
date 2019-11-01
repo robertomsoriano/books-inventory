@@ -299,7 +299,7 @@ const total = () => {
               <ListGroupItem style={{ float: "right", marginBottom: "1rem" }}>
                 Subtotal: <strong> ${total()}</strong>
                 <br />
-                {discount> 0 && applySale &&<><span>Discount: <strong><del>${discount}</del></strong></span><br/></>}
+                {discount> 0 && applySale &&<><span>Discount: <strong><del>${discount.toFixed(2)}</del></strong></span><br/></>}
                 
                 Taxes (6.25%):{" "}
                 <strong>
