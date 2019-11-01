@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { increaseQuantity } from "../../actions/cartActions";
 import { Link } from "react-router-dom";
-import { Search, Grid } from "semantic-ui-react";
+import { Search, Grid, Icon } from "semantic-ui-react";
 import BooksList from "../books/BooksList";
 import {
   Button,
@@ -38,11 +38,11 @@ class SearchBar extends Component {
   render() {
     const { isLoading, value, results } = this.state;
     const books = results
-
     return (
       <Grid>
         <Grid.Column width={10}>
           <Search
+            input={{icon: value.length<=0?<Icon name='search'/>: <Icon className='search-icon' name='delete' link onClick={()=> this.setState({ isLoading: false, results: [], value: "" })}/>, iconPosition: 'left'}}
             loading={isLoading}
             onResultSelect={this.handleResultSelect}
             onSearchChange={_.debounce(this.handleSearchChange, 500, {

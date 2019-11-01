@@ -4,7 +4,7 @@ import React, { Component } from "react";
 import { connect} from "react-redux";
 import {setInvoice} from '../../actions/checkoutActions'
 import {  withRouter} from "react-router-dom";
-import { Search, Grid, DropdownMenu } from "semantic-ui-react";
+import { Search, Grid, DropdownMenu, Icon } from "semantic-ui-react";
 import { Container, ListGroup, Card, Row, Col, Button} from "react-bootstrap";
 import Trans from "../dashboard/Trans";
 import Invoice from '../checkout/Invoice'
@@ -41,6 +41,7 @@ class TransSearch extends Component {
       <Grid>
         <Grid.Column width={10}>
           <Search
+            input={{icon: value.length<=0?<Icon name='search'/>: <Icon className='search-icon' name='delete' link onClick={()=> this.setState({ isLoading: false, results: [], value: "" })}/>, iconPosition: 'left'}}
             loading={isLoading}
             onResultSelect={this.handleResultSelect}
             onSearchChange={_.debounce(this.handleSearchChange, 500, {
