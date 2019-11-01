@@ -12,8 +12,9 @@ const TransactionSchema = new Schema({
     required: true
   },
   customer: {
-    type: Object,
-    required: true
+    type: Object
+    // Don't required customer data for now
+    // ,required: true
   },
   sale_date: {
     type: Date,
@@ -26,9 +27,15 @@ const TransactionSchema = new Schema({
   items: {
     type: [Object]
   },
+  sale: {
+    type: Boolean
+  },
   subtotal: {
     type: Number,
     required: true
+  },
+  discount: {
+    type: Number
   },
   taxes: {
     type: Number,

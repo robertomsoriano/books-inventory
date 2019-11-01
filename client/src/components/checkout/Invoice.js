@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "reactstrap";
 
-const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_price=null, amount_received=null }) => {
+const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_price=null, amount_received=null, sale=false, discount=0 }) => {
   console.log(amount_received)
   const PrintPage = () => {
     window.print();
@@ -124,7 +124,7 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_pric
               ))}
 
               <tbody>
-                {/* <tr>
+                <tr>
                   <td colSpan="2" className="blank">
                     {" "}
                   </td>
@@ -134,7 +134,18 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_pric
                   <td className="total-value">
                     <div id="subtotal">${subtotal}</div>
                   </td>
-                </tr> */}
+                </tr>
+                {discount > 0 &&<tr>
+                  <td colSpan="2" className="blank">
+                    {" "}
+                  </td>
+                  <td colSpan="2" className="total-line">
+                    Discount
+                  </td>
+                  <td className="total-value">
+                    <div id="subtotal"><del>${discount}</del></div>
+                  </td>
+                </tr>}
                 <tr>
                   <td colSpan="2" className="blank">
                     {" "}

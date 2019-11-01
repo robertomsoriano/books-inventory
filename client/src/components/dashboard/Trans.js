@@ -111,6 +111,8 @@ const trans = useSelector(state =>state.trans)
     taxes={transac.taxes}
     total={transac.total}
     amount_received={transac.amount_received}
+    sale={transac.sale}
+    discount={transac.discount}
     /> 
   </div>)}  
     </>

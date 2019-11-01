@@ -22,43 +22,68 @@ import { setCart } from "../../actions/cartActions";
 import { postTransaction, setInvoice, clearInvoice } from "../../actions/checkoutActions"
 import Swal from "sweetalert2";
 
-const CheckOut = props => {
+const NewCheckout = props => {
   // server msg
   const books = useSelector(state => state.cart.cart);
   // const [invoice, setInvoice] = useState(null);
   const invoice = props.invoice?props.invoice.invoice_number: null;
   const [applySale, setApplySale] = useState(false)
+//   const [percentage, setPercentage] = useState(0)
+  const [discount, setDiscount] = useState(0)
   const [user, handleChange] = useForm({
-    name: "",
-    email: "",
-    phone: "",
+    name: "Anonimo",
+    email: "anonimo@gmail.com",
+    phone: "999-999-9999",
     received: null,
     message: '',
-    assistant: ""
+    assistant: "Robert",
+    percentage: 0
   });
   useEffect(() => {
     props.clearInvoice();
     props.setCart();
     // eslint-disable-next-line
   }, []);
-  // Set cart total
-  const total = () => {
+  useEffect(() => {
+    console.log(user.percentage)
+  }, []);
+
+  //Helper for applying discount
+  const applyDiscount = (percent=user.percentage) => {
+    
+    let subtotal = (total() * (percent/100))
+    console.log(subtotal)
+    setDiscount(subtotal)
+    return 
+  }
+// Helper function to set items total
+const total = () => {
     if (!books) {
-      return 1;
-    } else if (books.length > 0) {
-      // let totalVariable = applySale?(book.item_total*.90).toFixed(2) : book.item_total
-      let totalAmount = books.map(book => (book.sale_price*.90));
-      // let totalAmount = books.map(book => book.item_total);
-      totalAmount = totalAmount.reduce((acc, curr) => acc + curr);
-      let result = Math.round(totalAmount * 100) / 100;
-      console.log(result)
-      return result;
-    } else {
-      return 1;
+        return 1;
+      } else if (books.length > 0) {
+        let quant = books.map(book => book.item_total);
+        quant = quant.reduce((acc, curr) => acc + curr);
+        let result = Math.round(quant * 100) / 100;
+        return result;
+      } else {
+        return 1;
     }
   };
+  const calcTaxes = (percentage=0.0625) => {
+      if(applySale){
+        return Math.round((total()- discount) * percentage * 100) / 100
+      }else{
+        return Math.round(total() * percentage * 100) / 100
+      }
+    
+  }
   const grandTotal = () => {
-    return (total() + Math.round(total() * 0.0625 * 100) / 100).toFixed(2);
+      if(applySale){
+          return (((total()-discount) + calcTaxes()).toFixed(2))
+      }
+    else{
+        return ((total() + calcTaxes()).toFixed(2))
+    }
   };
   const seller = "Iglesia Bautista Bíblica Inc.";
 
@@ -67,7 +92,7 @@ const CheckOut = props => {
     e.preventDefault();
     // Set Transaction object
     const sendTrans = async () => {
-      if (!user.assistant || !user.name) {
+      if (!user.assistant) {
         Swal.fire(
           "No customer information",
           "Please enter all the customer's info.",
@@ -82,6 +107,7 @@ const CheckOut = props => {
           transaction: {
             seller: seller,
             assistant: user.assistant,
+            // Don't required customer data for now
             customer: {
               name: user.name,
               email: user.email,
@@ -91,11 +117,12 @@ const CheckOut = props => {
               name: book.name,
               quantity: book.quantity,
               _id: book._id,
-              // price: book.price,
-              price:(applySale&& book.sale_price!== undefined)?(book.sale_price*.90).toFixed(2): book.price
+              price:book.price
             })),
+            sale: applySale,
             subtotal: total(),
-            taxes: (Math.round(total() * 0.0625 * 100) / 100),
+            discount: discount,
+            taxes: calcTaxes(),
             total: grandTotal(),
             amount_received: user.received,
             message: user.message,
@@ -142,6 +169,7 @@ const CheckOut = props => {
                   marginBottom: "20px"
                 }}
               >
+              {/* Dont required customer data for now */}
                 <Label for="name">Customer Full Name</Label>
                 <Input
                   type="text"
@@ -151,7 +179,6 @@ const CheckOut = props => {
                   className="mb-3"
                   value={user.name}
                   onChange={handleChange}
-                  required
                 />
 
                 <Label for="email">Email</Label>
@@ -195,7 +222,6 @@ const CheckOut = props => {
                   className="mb-3"
                   value={user.message}
                   onChange={handleChange}
-                  required
                 />
                 <Label for="assistant">Assistant</Label>
                 <Input
@@ -210,6 +236,24 @@ const CheckOut = props => {
                 />
                 <Segment compact>
                   <Checkbox toggle checked={applySale} onChange={() =>setApplySale(!applySale)} label='Apply Sale Price'/>
+                  {applySale && <>
+                  <span className='form-inline'>
+                    <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                        <Label for="Discount" className="mr-sm-2">Discount &#37;</Label>
+                        <Input
+                            type="percentage"
+                            name="percentage"
+                            id="percentage"
+                            placeholder="Enter percentage"
+                            value={user.percentage}
+                            onChange={handleChange}
+                        />
+                    </FormGroup>
+                    <Button onClick={() => applyDiscount()}>Apply Discount</Button>
+                    </span>
+                    </>}
+
+
                  </Segment>
               </section>
               <ListGroupItem>
@@ -245,9 +289,8 @@ const CheckOut = props => {
                             />
                           </td>
                           <td>{book.name}</td>
-                          <td>{book.quantity}</td>
-                          <td>${(applySale&& book.sale_price!== undefined)?(book.sale_price*.90).toFixed(2): book.price}</td>
-                          <td>${(((applySale&& book.sale_price!== undefined)?(book.sale_price*.90).toFixed(2): book.price)* book.quantity).toFixed(2)}</td>
+                          <td>{book.quantity}</td><td>${book.price}</td>
+                          <td>${(book.price * book.quantity).toFixed(2)}</td>
                         </tr>
                       </tbody>
                     ))}
@@ -256,10 +299,12 @@ const CheckOut = props => {
               <ListGroupItem style={{ float: "right", marginBottom: "1rem" }}>
                 Subtotal: <strong> ${total()}</strong>
                 <br />
+                {discount> 0 && applySale &&<><span>Discount: <strong><del>${discount}</del></strong></span><br/></>}
+                
                 Taxes (6.25%):{" "}
                 <strong>
                   {" "}
-                  ${Math.round(total() * 0.0625 * 100) / 100}
+                  ${calcTaxes()}
                 </strong>{" "}
                 <br />
                 <hr />
@@ -289,6 +334,8 @@ const CheckOut = props => {
         taxes={props.invoice.taxes}
         total={props.invoice.total}
         amount_received={props.invoice.amount_received}
+        sale={props.sale}
+        discount={props.discount}
       />
     </div>
   )
@@ -302,4 +349,5 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { setCart, postTransaction, setInvoice, clearInvoice }
-)(withRouter(CheckOut));
+)(withRouter(NewCheckout));
+

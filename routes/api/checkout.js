@@ -13,9 +13,12 @@ router.post("/", auth, (req, res) => {
   const newTransaction = new Transaction({
     seller: req.body.transaction.seller,
     assistant: req.body.transaction.assistant,
+    // Don't required customer data for now
     customer: req.body.transaction.customer,
     items: req.body.transaction.items,
+    sale: req.body.transaction.sale,
     subtotal: req.body.transaction.subtotal,
+    discount: req.body.transaction.discount,
     taxes: req.body.transaction.taxes,
     total: req.body.transaction.total,
     amount_received: req.body.transaction.amount_received,
