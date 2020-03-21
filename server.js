@@ -14,10 +14,16 @@ app.options("*", cors());
 // Bodyparser Middleware
 app.use(express.json());
 
+// Start DB
+
+// SET UP Mongoose Promises.
+mongoose.Promise = global.Promise;
+
 // DB Config
 // const db = config.get("mongoURI");
 const db = process.env.MONGO_URI;
 // Connect to Mongo
+
 const options = {
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -32,20 +38,35 @@ const options = {
 
 const connectWithRetry = () => {
   console.log("MongoDB connection with retry");
-  mongoose
-    .connect(db, options)
-    .then(() => {
-      console.log("MongoDB is connected");
-    })
-    .catch(err => {
-      console.log(
-        "MongoDB connection unsuccessful, retry after 5 seconds.",
-        err
-      );
-      setTimeout(connectWithRetry, 5000);
-    });
-};
+  try {
+    mongoose.connect(db, options);
+  } catch (err) {
+    console.log("MongoDB connection unsuccessful, retry after 5 seconds.", err);
+    setTimeout(connectWithRetry, 5000);
+  }
 
+  // If the connection throws an error
+  mongoose.connection.on("error", function(err) {
+    console.log("Mongoose default connection error: " + err);
+    setTimeout(connectWithRetry, 3000);
+  });
+  // When the connection is disconnected
+  mongoose.connection.on("disconnected", function() {
+    console.log("Mongoose default connection disconnected");
+    setTimeout(connectWithRetry, 3000);
+  });
+
+  // If the Node process ends, close the Mongoose connection
+  process.on("SIGINT", function() {
+    mongoose.connection.close(function() {
+      console.log(
+        "Mongoose default connection disconnected through app termination"
+      );
+      process.exit(0);
+    });
+  });
+  return;
+};
 connectWithRetry();
 
 // Use Routes

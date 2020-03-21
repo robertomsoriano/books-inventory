@@ -10,7 +10,7 @@ const Cart = require("../../models/Cart");
 // @desc    Get all books
 // @access  Public
 router.get("/", (req, res) => {
-  console.log("one");
+  console.log(`Books GET Req at ${Date()}`);
   Book.find()
     .sort({ name: 1 })
     .then(books => res.send(books));

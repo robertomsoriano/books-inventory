@@ -12,6 +12,7 @@ const User = require("../../models/User");
 // @desc    Auth user
 // @access  Public
 router.post("/", (req, res) => {
+  console.log(`Auth Req at ${Date()}`);
   const { email, password } = req.body;
   const emails = process.env.ALLOWED_USERS;
   if (!emails.includes(email)) {

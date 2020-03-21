@@ -9,7 +9,7 @@ const Cart = require("../../models/Cart");
 // @desc    Get all cart
 // @access  Private
 router.get("/", auth, (req, res) => {
-  console.log("Get Cart");
+  console.log(`Cart GET Req at ${Date()}`);
   try {
     Cart.find({ user: req.user.id })
       .sort({ date_added: -1 })
