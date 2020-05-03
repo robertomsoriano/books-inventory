@@ -81,8 +81,8 @@ const AddBookModal = props => {
           Add New Book
         </Button>
       ) : (
-        <h4 className="mb-3 ml-4">Please log in to manage books</h4>
-      )}
+          <h4 className="mb-3 ml-4">Please log in to manage books</h4>
+        )}
 
       <Modal isOpen={modal} toggle={() => toggle()}>
         <ModalHeader toggle={() => toggle()}>Add To Books List</ModalHeader>
