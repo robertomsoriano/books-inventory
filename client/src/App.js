@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AppNavbar from "./components/AppNavbar";
 import { Container } from "reactstrap";
 
@@ -23,27 +23,26 @@ import SearchBar from "./components/search/SearchBar";
 import LandingPage from "./components/auth/LandingPage";
 import SingleInvoice from "./components/dashboard/SingleInvoice";
 class App extends Component {
-  state={
+  state = {
     user: null
   }
   componentDidMount() {
-      store.dispatch(loadUser())   
-      
+    store.dispatch(loadUser())
   }
 
   render() {
     let loading =
       store.getState().auth.isLoading && store.getState().book.loading && store.getState().trans.loading
 
-      if(this.props.auth.loading === true || loading){
-        return (
-         <>
+    if (this.props.auth.loading === true || loading) {
+      return (
+        <>
           <div className="spinner">
             <Spinner animation="grow" variant="info" />
           </div>
         </>
-        )
-      }
+      )
+    }
     return (
       <>
         {loading && (
@@ -59,25 +58,25 @@ class App extends Component {
               <AppNavbar />
               <Container>
                 <Switch>
-                
+
                   {this.props.auth.isAuthenticated && (
-                  <>
-                  <Route path="/" exact  render={() => this.props.auth.isAuthenticated? <BooksSearch/>: <BooksList/>}/> 
-                  <Route path="/books" exact  render={() => <SearchBar/>}/>
-                  <Route
-                    path="/edit/:id"
-                    exact
-                    render={(props) => <EditBook {...props} />}
-                  />
-                  <Route path="/dashboard" component={Dashboard} />
-                  <Route path="/cart" exact component={Cart} />
-                  <Route path="/checkout" component={NewCheckout} />
-                  <Route path="/invoice" component={SingleInvoice} />
-                  
-                  </>
+                    <>
+                      <Route path="/" exact render={() => this.props.auth.isAuthenticated ? <BooksSearch /> : <BooksList />} />
+                      <Route path="/books" exact render={() => <SearchBar />} />
+                      <Route
+                        path="/edit/:id"
+                        exact
+                        render={(props) => <EditBook {...props} />}
+                      />
+                      <Route path="/dashboard" component={Dashboard} />
+                      <Route path="/cart" exact component={Cart} />
+                      <Route path="/checkout" component={NewCheckout} />
+                      <Route path="/invoice" component={SingleInvoice} />
+
+                    </>
                   )}
-        {!this.props.auth.isAuthenticated && <Route path="/"  render={(props) => <LandingPage/>}/> }
-        
+                  {!this.props.auth.isAuthenticated && <Route path="/" render={(props) => <LandingPage />} />}
+
                 </Switch>
               </Container>
             </div>
