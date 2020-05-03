@@ -29,8 +29,8 @@ const options = {
   useFindAndModify: false,
   useNewUrlParser: true,
   useCreateIndex: true,
-  reconnectTries: 30, // Retry up to 30 times
-  reconnectInterval: 500, // Reconnect every 500ms
+  // reconnectTries: 30, // Retry up to 30 times
+  // reconnectInterval: 500, // Reconnect every 500ms
   poolSize: 10, // Maintain up to 10 socket connections
   // If not connected, return errors immediately rather than waiting for reconnect
   bufferMaxEntries: 0
@@ -46,19 +46,19 @@ const connectWithRetry = () => {
   }
 
   // If the connection throws an error
-  mongoose.connection.on("error", function(err) {
+  mongoose.connection.on("error", function (err) {
     console.log("Mongoose default connection error: " + err);
     setTimeout(connectWithRetry, 3000);
   });
   // When the connection is disconnected
-  mongoose.connection.on("disconnected", function() {
+  mongoose.connection.on("disconnected", function () {
     console.log("Mongoose default connection disconnected");
     setTimeout(connectWithRetry, 3000);
   });
 
   // If the Node process ends, close the Mongoose connection
-  process.on("SIGINT", function() {
-    mongoose.connection.close(function() {
+  process.on("SIGINT", function () {
+    mongoose.connection.close(function () {
       console.log(
         "Mongoose default connection disconnected through app termination"
       );
