@@ -14,7 +14,6 @@ import "./components/checkout/invoice.css";
 import BooksList from "./components/books/BooksList";
 import EditBook from "./components/books/EditBook";
 import Cart from "./components/cart/Cart";
-// import CheckOut from "./components/checkout/CheckOut";
 import NewCheckout from "./components/checkout/NewCheckout";
 import Dashboard from "./components/dashboard/Dashboard";
 import { Spinner } from "react-bootstrap";
