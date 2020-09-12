@@ -1,14 +1,16 @@
 import React from "react";
+import moment from 'moment/moment'
 import { Container } from "reactstrap";
 
-const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_price=null, amount_received=null, sale=false, discount=0 }) => {
+const Invoice = ({ invoiceNumber, date, user, books, subtotal, taxes, total, sale_price = null, amount_received = null, sale = false, discount = 0 }) => {
   console.log(amount_received)
   const PrintPage = () => {
     window.print();
   };
   const invoiceLogo = "https://ibbreformada.org/wp-content/uploads/2019/06/LogoMakr_0R2xJD.png"
 
-  let totalVariable = sale_price? 'Subtotal': 'Grand Total'
+  let totalVariable = sale_price ? 'Subtotal' : 'Grand Total'
+  console.log(date)
   return (
     <>
       {/* <Button onClick={() => PrintPage()} variant="outline-light">Print Invoice</Button> */}
@@ -32,7 +34,7 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_pric
               <p id="address">
                 Libreria Bíblica Sendas Antiguas
                 <br />
-                290 Water Street, Lawrence MA 01841
+                18 Broadway St., Lawrence MA 01840
                 <br />
                 Phone: (978) 681-7570
               </p>
@@ -68,7 +70,7 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_pric
                   <tr>
                     <td className="meta-head">Date</td>
                     <td>
-                      <p id="date">{Date().slice(0, 15)}</p>
+                      <p id="date">{moment(date).format("LLL").slice(0, 16)}</p>
                     </td>
                   </tr>
                   <tr>
@@ -135,7 +137,7 @@ const Invoice = ({ invoiceNumber, user, books, subtotal, taxes, total, sale_pric
                     <div id="subtotal">${subtotal}</div>
                   </td>
                 </tr>
-                {discount > 0 &&<tr>
+                {discount > 0 && <tr>
                   <td colSpan="2" className="blank">
                     {" "}
                   </td>

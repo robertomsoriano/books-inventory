@@ -337,6 +337,7 @@ const NewCheckout = props => {
             amount_received={props.invoice.amount_received}
             sale={props.sale}
             discount={props.discount}
+            date={props.invoice.sale_date}
           />
         </div>
       )

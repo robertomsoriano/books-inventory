@@ -169,5 +169,6 @@ const showInvoice = (transac) => (
       subtotal={transac.subtotal}
       taxes={transac.taxes}
       total={transac.total}
+      date={transac.sale_date}
     />
   </div>)

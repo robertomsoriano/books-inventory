@@ -113,6 +113,7 @@ const Trans = (props) => {
             amount_received={transac.amount_received}
             sale={transac.sale}
             discount={transac.discount}
+            date={transac.sale_date}
           />
         </div>)}
     </>
