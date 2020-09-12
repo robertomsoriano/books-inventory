@@ -3,14 +3,12 @@ import moment from 'moment/moment'
 import { Container } from "reactstrap";
 
 const Invoice = ({ invoiceNumber, date, user, books, subtotal, taxes, total, sale_price = null, amount_received = null, sale = false, discount = 0 }) => {
-  console.log(amount_received)
   const PrintPage = () => {
     window.print();
   };
   const invoiceLogo = "https://ibbreformada.org/wp-content/uploads/2019/06/LogoMakr_0R2xJD.png"
 
   let totalVariable = sale_price ? 'Subtotal' : 'Grand Total'
-  console.log(date)
   return (
     <>
       {/* <Button onClick={() => PrintPage()} variant="outline-light">Print Invoice</Button> */}
