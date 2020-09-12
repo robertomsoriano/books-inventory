@@ -70,7 +70,7 @@ const Invoice = ({ invoiceNumber, date, user, books, subtotal, taxes, total, sal
                   <tr>
                     <td className="meta-head">Date</td>
                     <td>
-                      <p id="date">{moment(date).format("LLL").slice(0, 16)}</p>
+                      <p id="date">{moment(date).format("MMMM DD, YYYY")}</p>
                     </td>
                   </tr>
                   <tr>
